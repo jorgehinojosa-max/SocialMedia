@@ -1,0 +1,55 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.Extensions.Options;
+using SocialMedia.Core.Interfaces;
+using SocialMedia.Infrastructure.Data;
+using SocialMedia.Infrastructure.Mappings;
+using SocialMedia.Infrastructure.Repositories;
+
+namespace SocialMedia.Api
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            #region Configurar la BD MySql
+            var connectionString = builder.Configuration.GetConnectionString("ConnectionMySql");
+            builder.Services.AddDbContext<SocialMediaContext>(options =>
+                options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 30)),
+                    mySqlOptions => mySqlOptions.EnableRetryOnFailure()));
+            #endregion
+
+            // Add services to the container.
+
+            // insertar donde usamos inyeccion de depnedecia
+            builder.Services.AddTransient<IPostRepository, PostRepository>();  //inyectar repositoriao
+            builder.Services.AddTransient<ICommentRepository, CommentRepository>();
+
+            builder.Services.AddControllers();
+            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+            builder.Services.AddOpenApi();
+
+            // INYECTAR Mapeos 
+            builder.Services.AddAutoMapper(typeof(PostProfile).Assembly);
+            builder.Services.AddAutoMapper(typeof(CommentProfile).Assembly);
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                app.MapOpenApi();
+            }
+
+            app.UseHttpsRedirection();
+
+            app.UseAuthorization();
+
+            app.MapControllers();
+
+            app.Run();
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\SocialMedia.Api\\Controllers",
+    "\\SocialMedia.Core",
+    "\\SocialMedia.Core\\DTOs",
+    "\\SocialMedia.Infrastructure",
+    "\\SocialMedia.Infrastructure\\Data",
+    "\\SocialMedia.Infrastructure\\Data\\Configurations",
+    "\\SocialMedia.Infrastructure\\Repositories"
+  ],
+  "SelectedNode": "\\SocialMedia.Infrastructure\\Repositories\\PostRepository.cs",
+  "PreviewInSolutionExplorer": false
+}
